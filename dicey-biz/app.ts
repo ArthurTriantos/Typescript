@@ -1,10 +1,12 @@
-const diceContainer = document.getElementById("dice-container"),
-    generateDie = document.getElementById("generate-die"),
-    sumDice = document.getElementById("sum-dice"),
-    rollDice = document.getElementById("roll-dice");
-let diceArr = [];
+const diceContainer = <HTMLDivElement>document.getElementById("dice-container");
+const generateDie = <HTMLButtonElement>document.getElementById("generate-die");
+const sumDice = <HTMLButtonElement>document.getElementById("sum-dice");
+const rollDice = <HTMLButtonElement>document.getElementById("roll-dice");
+let diceArr: Die[] = [];
 
-generateDie.addEventListener("click", () => new Die(null));
+
+
+generateDie.addEventListener("click", () => new Die());
 
 sumDice.addEventListener("click", () => {
     let sum = 0;
@@ -15,18 +17,21 @@ sumDice.addEventListener("click", () => {
 rollDice.addEventListener("click", () => diceArr.forEach(die => die.roll()));
 
 class Die {
-    constructor(value) {
-        this.value = value;
-        this.div = document.createElement("div");
-        this.div.className = "dice";
-        this.div.addEventListener("click", () => this.roll());
-        this.div.addEventListener("dblclick", () => {
+    [x: string]: any;
+    dieDiv: HTMLDivElement;
+    value!: number;
+
+    constructor() {
+        this.dieDiv = document.createElement("div");
+        this.dieDiv.className = "dice";
+        this.dieDiv.addEventListener("click", () => this.roll());
+        this.dieDiv.addEventListener("dblclick", () => {
             let index = diceArr.indexOf(this);
             diceArr.splice(index, 1);
-            diceContainer.removeChild(this.div);
+            diceContainer.removeChild(this.dieDiv);
         });
         this.roll();
-        diceContainer.appendChild(this.div);
+        diceContainer.appendChild(this.dieDiv);
         diceArr.push(this);
     }
 
